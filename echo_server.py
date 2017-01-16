@@ -25,6 +25,7 @@ def server(log_buffer=sys.stderr):
     # TODO: bind your new sock 'sock' to the address above and begin to listen
     #       for incoming connections
     sock.bind(address)
+    sock.listen(1)
     try:
         # the outer loop controls the creation of new connection sockets. The
         # server will handle each incoming connection one at a time.
