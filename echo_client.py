@@ -9,7 +9,7 @@ def client(msg, log_buffer=sys.stderr):
     sock = socket.socket(
         socket.AF_INET,
         socket.SOCK_STREAM,
-        socket.IPPROTO_IP)
+        proto=0)
     print('connecting to'
           '{0} port {1}'.format(*server_address), file=log_buffer)
     # TODO: connect your socket to the server here.
@@ -31,9 +31,13 @@ def client(msg, log_buffer=sys.stderr):
         #
         #       Log each chunk you receive.  Use the print statement below to
         #       do it. This will help in debugging problems
-        chunk = sock.recv()
-        print('received "{0}"'.format(chunk.decode('utf8')), file=log_buffer)
-        received_message += chunk
+        while 1:
+            chunk = sock.recv(16)
+            print('received "{0}"'.format(chunk.decode('utf8')),
+                  file=log_buffer)
+            received_message += chunk
+            if len(chunk) < 16:
+                break
     finally:
         # TODO: after you break out of the loop receiving echoed chunks from
         #       the server you will want to close your client socket.
