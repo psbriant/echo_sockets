@@ -10,7 +10,7 @@ def server(log_buffer=sys.stderr):
     sock = socket.socket(
         socket.AF_INET,
         socket.SOCK_STREAM,
-        socket.IPPROTO_IP)
+        proto=0)
 
     # TODO: You may find that if you repeatedly run the server script it fails,
     #       claiming that the port is already used.  You can set an option on
@@ -50,7 +50,7 @@ def server(log_buffer=sys.stderr):
                     #       following line with your code.  It's only here as
                     #       a placeholder to prevent an error in string
                     #       formatting
-                    data = conn.recv()
+                    data = conn.recv(16)
                     print('received "{0}"'.format(data.decode('utf8')))
                     # TODO: Send the data you received back to the client, log
                     # the fact using the print statement here.  It will help in
@@ -59,6 +59,8 @@ def server(log_buffer=sys.stderr):
                     print('sent "{0}"'.format(data.decode('utf8')))
                     # TODO: Check here to see if the message you've received is
                     # complete.  If it is, break out of this inner loop.
+                    if len(data) < 16:
+                        break
 
             finally:
                 # TODO: When the inner loop exits, this 'finally' clause will
